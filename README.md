@@ -3,7 +3,7 @@ A solution for collecting Internet volume for some key words with CI/CD workflow
 
 # Architecture
 ![](https://i.imgur.com/i71m0dX.png)
-## Components 
+## Components
 ### Crawler Scheduler
 - Cronjob to generate URL
 - Send URLs to RabbitMQ
@@ -35,6 +35,7 @@ ArgoCD use for install helm charts on GCP cluster.
 ![](https://i.imgur.com/E61rfKD.png)
 
 # Application Present
-(Grafana dashboard)
+
+![](https://i.imgur.com/FRo6fP4.jpg)
 
 # Contribution
