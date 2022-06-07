@@ -67,7 +67,7 @@ class crawler(Resource):
         #whitelist = ['ASML', 'Intel', 'TSMC']
         whitelist = [query]
         result = self.crawler.get_wordcount_json(whitelist, word_count) 
-        self.crawler.jsonarray_toexcel(result, path)       
+        flag = self.crawler.jsonarray_toexcel(result)       
         return result
 
 
