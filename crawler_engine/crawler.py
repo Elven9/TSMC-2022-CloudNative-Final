@@ -54,7 +54,8 @@ class crawler(Resource):
             #print(type(x))
             results += self.get_resource_count(data)
         print(type(results))
-        flag = self.crawler.jsonarray_toexcel(results, path) 
+        #self.crawler.jsonarray_toexcel(results, path) 
+        self.store_data(results)
         return results
 
     def get_resource_count(self, data):
@@ -216,22 +217,19 @@ class GoogleCrawler():
                 data_array.append(json_data)
         return data_array
     def jsonarray_toexcel(self,data_array, path):
-        flag = 0
         df = pd.DataFrame(data=data_array)
         now = datetime.now()
         current_time = now.strftime("%H:%M:%S")
         filename = path + current_time + ".xlsx"
         print("save result as "+filename)
         try:
-            flag = 1
             print("Save to pvc")
             df.to_excel(filename , index=False)
         except:
-            flag = 2
             print("Save Error, Change")
             print("Save to Root")
             df.to_excel('result.xlsx' , index=False)
-        return flag
+        return
 
 #api.add_resource(crawler, '/crawler/<string:company>')
 api.add_resource(crawler, '/crawler')

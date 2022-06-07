@@ -61,7 +61,8 @@ def test_get_wordcount_json():
     orignal_text = crawler_loc.html_getText(soup)
     result_wordcount = crawler_loc.word_count(orignal_text)
     whitelist = ['Ukraine' , 'Russia', 'Japan']
-    end_result = crawler_loc.get_wordcount_json(whitelist , result_wordcount)
+    date = ['2/20']
+    end_result = crawler_loc.get_wordcount_json(whitelist , result_wordcount, date)
     assert len(end_result) > 0
 
 def test_jsonarray_toexcel():
@@ -72,7 +73,8 @@ def test_jsonarray_toexcel():
     orignal_text = crawler_loc.html_getText(soup)
     result_wordcount = crawler_loc.word_count(orignal_text)
     whitelist = ['Ukraine' , 'Russia']
-    end_result = crawler_loc.get_wordcount_json(whitelist , result_wordcount)
+    date = ['2/20']
+    end_result = crawler_loc.get_wordcount_json(whitelist , result_wordcount, date)
     path = '/var/log/history/'
     c_flag = crawler_loc.jsonarray_toexcel(end_result, path)
     assert c_flag != 0
@@ -85,7 +87,7 @@ def test_get_original_text():
 
 def test_get_resource_count():
     crawler_loc = crawler.crawler()
-    data = {"type":"TSMC", "url":["https://taipeitimes.com/News/biz/archives/2022/01/20/2003771688", "https://udn.com/news/story/7240/6367275"]}
+    data = {"type":"TSMC", "url":["https://taipeitimes.com/News/biz/archives/2022/01/20/2003771688", "https://udn.com/news/story/7240/6367275"], "date":"2/20"}
     result = crawler_loc.get_resource_count(data)
     assert len(result) > 0
 '''
