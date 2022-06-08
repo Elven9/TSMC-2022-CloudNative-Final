@@ -2,7 +2,7 @@ jobs:
   - name: crawler-scheduler
     image:
       repository: alan0415/crawler-scheduler
-      tag: latest
+      tag: b5c40f09686a2e8761b736d78e06c49d1086db20
       imagePullPolicy: Always
     schedule: "*/5 * * * *"
     restartPolicy: Never
@@ -28,7 +28,7 @@ deployments:
     replicas: 1
     image:
       repository: alan0415/crawler-engine
-      tag: latest
+      tag: b5c40f09686a2e8761b736d78e06c49d1086db20
       imagePullPolicy: Always
     containerPort: 8088
     pvc:

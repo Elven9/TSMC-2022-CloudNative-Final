@@ -22,6 +22,7 @@ env:
   # Define path for projects
   CRAWLER_ENGINE_BASE_PATH: "crawler_engine"
   CONTAINER_NAME: crawler-engine
+  #SHA8: ${GITHUB_SHA::8}
 jobs:
   test:
     runs-on: ubuntu-latest
@@ -29,6 +30,9 @@ jobs:
       matrix:
         python-version: ["3.6"]
     steps:
+      - name: echo short commit sha
+        run: |
+          echo $GITHUB_SHA
       - uses: actions/checkout@v3
       - name: Set up Python ${{ matrix.python-version }}
         uses: actions/setup-python@v3
@@ -66,4 +70,31 @@ jobs:
           context: ./${{ env.CRAWLER_ENGINE_BASE_PATH }}
           file: ./${{ env.CRAWLER_ENGINE_BASE_PATH }}/Dockerfile
           push: true
-          tags: ${{ secrets.DOCKER_HUB_USERNAME }}/${{ env.CONTAINER_NAME }}:latest
+          tags: ${{ secrets.DOCKER_HUB_USERNAME }}/${{ env.CONTAINER_NAME }}:${{ github.sha }} #$(git rev-parse --short "$GITHUB_SHA")
+  commit-image-tag:
+    needs: crawler-build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2.3.2
+
+      - name: update repo
+        run: |
+          git pull origin ${{ github.ref }}
+
+      - name: Modifiy the specific files using scripts
+        run: |
+          sed -i '31c\      tag: ${{ github.sha }}' tsmc-digital-business/values.yaml
+
+      - name: Commit changes
+        run: |
+          git config --global user.name "Github Action"
+          git config --global user.email "github.action@git"
+
+          git add tsmc-digital-business/values.yaml
+          git commit -m "commit new image tag"
+      - name: push
+        uses: ad-m/github-push-action@master
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          branch: ${{ github.ref }}
